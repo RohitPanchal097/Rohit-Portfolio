@@ -1,35 +1,38 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import {SlShareAlt} from "react-icons/sl"
 const ProjectSection = () => {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const titleLineRef = useRef(null);
+  const triggerRef = useRef(null);
+  const horizontalRef = useRef(null);
 
-//project Images Data
-const projectImage = [
+
+  //project Images Data
+  const projectImages = [
     {
-        id: 1,
-        title: "Project One",
-        imageSrc: "/project1.png",
+      id: 1,
+      title: "Project One",
+      imageSrc: "/project-1.png",
     },
     {
-        id: 2,
-        title: "Project Two",
-        imageSrc: "/project2.png",
+      id: 2,
+      title: "Project Two",
+      imageSrc: "/project-2.png",
     },
     {
-        id: 3,
-        title: "Project Three",
-        imageSrc: "/project3.png",
+      id: 3,
+      title: "Project Three",
+      imageSrc: "/project-3.png",
     },
     {
-        id: 4,
-        title: "Project Four",
-        imageSrc: "/project4.png",
-    }
-]
+      id: 4,
+      title: "Project Four",
+      imageSrc: "/project-4.png",
+    },
+  ];
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -73,7 +76,100 @@ const projectImage = [
         },
       }
     );
-  });
+    // section entrance effect
+
+    gsap.fromTo(
+        triggerRef.current,
+        {
+            y: 100,
+            rotateX: 20,
+            opacity: 0
+        },
+        {
+            y: 0,
+            rotateX: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+            delay: 0.2,
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 70%",
+                toggleActions: "play none none reverse"
+            }
+        }
+    )
+
+    //parallax effect for the entire section
+
+    gsap.fromTo(
+        sectionRef.current,
+        {
+            backgroundPosition: "50% 0%",
+        },
+        {
+            backgroundPosition: "50% 100%",
+            ease: "none",
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top-bottom",
+                end: "bottom top",
+                scrub: true,
+            }
+        }
+    )
+    //Horizontal Scrolling
+    //create the horizontal animation
+
+    const horizontalScroll = gsap.to(".panel", {
+        xPercent: -100 * (projectImages.length -1),
+        ease: "none",
+        scrollTrigger: {
+            trigger: triggerRef.current,
+            start: "top top",
+            end: () =>  `+=${horizontalRef.current.offsetWidth}`,
+            pin: true,
+            scrub: 1,
+            snap: {
+                spanTO: 1 / (projectImages.length -1),
+                duration: {main: 0.2, max: 0.3},
+                delay: 0.1,   
+            },
+            invalidateOnRefresh: true
+
+        }
+    })
+
+    //image Animation
+    // animate each image panel
+    const panels = gsap.utils.toArray(".panel")
+    panels.forEach((panel, i) =>{
+        const image = panel.querySelector(".project-image")
+        const imageTitle = panel.querySelector(".porject-title")
+
+        // create a timeline for each panel
+
+        const tl = gsap.timeline ({
+            scrollTrigger: {
+                trigger: panel, 
+                containerAnimation: horizontalScroll,
+                start: "left right",
+                end: "right left",
+                scrub: true,
+            }
+        })
+        // image scal and opacit animation
+        tl.fromTo(image, {scale: 0, rotate: -20,}, {scale: 1, rotate: 1, duration: 0.5, })
+
+        //title animation if it exits
+
+        if (imageTitle){
+            tl.fromTo(imageTitle, {y:30,},{y: -100, duration: 0.3, }, 0.2)
+        }
+    })
+
+
+  },[projectImages.length]);
 
   return (
     <section
@@ -94,9 +190,26 @@ const projectImage = [
           className="w-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto opacity-0"
         ></div>
         {/* Horizontal Scrollable Projects */}
-        <div className="overflow-hidden">
-          <div className="horizontal-section flex md:w-[400%] w-[420%]">
-
+        <div ref={triggerRef} className="overflow-hidden opacity-0">
+          <div 
+          ref={horizontalRef}
+          className="horizontal-section flex md:w-[400%] w-[420%]">
+            {projectImages.map((project) => (
+              <div
+              
+                key={project.id}
+                className="panel relative flex items-center justify-center"> 
+                <div className="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 md:p-12">
+                    <img 
+                    className="project-image max-w-full max-h-full rounded-2xl object-cover"
+                    
+                    src={project.imageSrc} alt="Project0img" />
+                    <h2 className="project-title flex items-center gap-3 md:text-3xl text-sm md:font-bold text-black mt-6 z-50 text-nowrap hover:text-gray-400 transition-colors duration-300 cursor-pointer">
+                        {project.title}
+                    </h2>
+                </div>
+                </div>
+            ))}
           </div>
         </div>
       </div>
