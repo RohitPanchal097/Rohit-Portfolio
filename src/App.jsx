@@ -4,6 +4,7 @@ import './App.css'
 import HeroSection from './components/HeroSection'
 import CustomCursor from './components/CustomCursor'
 import AboutSection from './components/AboutSection'
+import ProjectSection from './components/ProjectSection'
 
 function App() {
   
@@ -14,6 +15,7 @@ function App() {
     <HeroSection/>
     <CustomCursor/>
     <AboutSection/>
+    <ProjectSection/>
     </>
   )
 }
