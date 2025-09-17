@@ -41,10 +41,10 @@ function HeroSection() {
     <motion.div
       initial={{ y: 80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.9, type: 'spring', stiffness: 40, damping: 25, duration: 1.5 }}
-      className="w-full h-full absolute top-0 left-0 hidden md:block"
+      transition={{ delay: 1.2, type: 'spring', stiffness: 40, damping: 25, duration: 1.5 }}
+      className="w-[40rem] h-[40rem] absolute top-50 right-50 hidden md:block"
     >
-      <Suspense fallback={<div className="w-full h-full flex items-center justify-center bg-black bg-opacity-40 z-0">Loading 3D...</div>}>
+      <Suspense fallback={<div className=" flex items-center justify-center bg-black bg-opacity-40 z-0">Loading 3D...</div>}>
         <Spline scene="https://prod.spline.design/rZKsBeHtuYwVhB-O/scene.splinecode" />
       </Suspense>
     </motion.div>

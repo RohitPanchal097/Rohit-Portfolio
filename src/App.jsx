@@ -3,6 +3,7 @@ import Header from './components/Header'
 import './App.css'
 import HeroSection from './components/HeroSection'
 import CustomCursor from './components/CustomCursor'
+import AboutSection from './components/AboutSection'
 
 function App() {
   
@@ -12,6 +13,7 @@ function App() {
     <Header/>
     <HeroSection/>
     <CustomCursor/>
+    <AboutSection/>
     </>
   )
 }
