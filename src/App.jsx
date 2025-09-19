@@ -8,6 +8,8 @@ import CustomCursor from './components/CustomCursor'
 import AboutSection from './components/AboutSection'
 import ProjectSection from './components/ProjectSection'
 import './index.css'
+import ContactSection from './components/ContactSection'
+import Footer from './components/Footer'
 function App() {
   useEffect(()=>{
     // register Scrolltrigger plugin
@@ -29,6 +31,8 @@ function App() {
     <CustomCursor/>
     <AboutSection/>
     <ProjectSection/>
+    <ContactSection/>
+    <Footer/>
     </>
   )
 }
